@@ -1,134 +1,59 @@
-"use client"
+import Hero from "@/components/Hero"
+import Image from "next/image"
+import { PostCard } from "@/components/PostCard"
+import { Button } from "@/components/ui/button"
 
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  MapPin,
-  Mail,
-  Phone
-} from "lucide-react"
-import { Input } from '@/components/ui/input';
-import { Textarea } from "@/components/ui/textarea"
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import Tiptap from "@/components/Tiptap"
-import Header from "@/components/Header";
-import Image from "next/image";
+const news = [
+    {
+        id: 1,
+        className: "",
+        image: "card-image.svg",
+        title: "Karine Choi e João Pedro trabalham duro em protótipo",
+        date: "18 ago. 2023",
+        text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ut laudantium nihil inventore! Veritatis, nihil? Officiis molestiae eum doloribus nemo praesentium, corrupti, dignissimos atque, repellendus obcaecati illum aliquid perspiciatis minus magni?",
+    },
+    {
+        id: 2,
+        className: "",
+        image: "card-image2.svg",
+        title: "O que fazer em momentos de desespero?",
+        date: "29 out. 2023",
+        text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ut laudantium nihil inventore! Veritatis, nihil? Officiis molestiae eum doloribus nemo praesentium, corrupti, dignissimos atque, repellendus obcaecati illum aliquid perspiciatis minus magni?",
+    },
+]
 
 export default function Home() {
-    const formSchema = z.object({
-        name: z
-          .string()
-          .min(3, { message: "O nome precisa ter, no mínimo, 3 letras." })
-          .max(100, { message: "O nome digitado é muito longo." })
-          .trim(),
-        email: z
-          .string()
-          .email({ message: "E-mail inválido." }),
-        text: z
-          .string()
-          .min(1, { message: "Esta mensagem é muito curta." })
-          .max(5000, { message: "Esta mensagem é muito longa. Experimente outros canais de comunicação para facilitar o seu contato com o laboratório." })
-          .trim()
-    });
+    const postArray = news.map(post => <PostCard key={post.id} {...post}/>);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        mode: "onChange",
-        defaultValues: {
-            name: "",
-            email: "",
-            text: ""
-        }
-    });
-
-    function onSubmit(values: z.infer<typeof formSchema>) {
-
-    }
-    return (<div>
-        <Header />
-        <main className="bg-[#4A6670] pt-[10em]">
-            <div className='grid grid-cols-3 pl-[3.125em] pr-[3.125em] pb-[3.125em] rounded-tl-[3.125em] rounded-br-[0em] rounded-tr-[3.125em] rounded-bl-[0em] bg-[#FDFBFB] relative h-auto'>
-                <div className="flex gap-10 justify-center p-[3.125em] w-[61em] h-auto bg-[#FDFBFB] rounded-[1.25em] absolute top-[100%] left-[50%] translate-x-[-50%] translate-y-[-30%] shadow-lg">
-                    <div>
-                      <h1 className='text-[2rem]'>Entre em contato conosco</h1>
-                      <p>Como podemos te ajudar?</p>
-                      <Form {...form}>
-                          <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
-                              <FormField
-                                  control={form.control}
-                                  name="name"
-                                  render={({ field }) => (
-                                      <FormItem>
-                                      <FormLabel>Nome</FormLabel>
-                                      <FormControl>
-                                          <Input placeholder="Name" />
-                                      </FormControl>
-                                      <FormDescription>
-                                          Preencha o campo acima com o seu nome.
-                                      </FormDescription>
-                                      <FormMessage />
-                                      </FormItem>
-                                  )}
-                              />
-                              <FormField
-                                  control={form.control}
-                                  name="email"
-                                  render={({ field }) => (
-                                      <FormItem>
-                                      <FormLabel>E-mail</FormLabel>
-                                      <FormControl>
-                                          <Input type="email" placeholder="Endereço de e-mail" />
-                                      </FormControl>
-                                      <FormDescription>
-                                          Informe o seu e-mail para que possamos entrar em contato.
-                                      </FormDescription>
-                                      <FormMessage />
-                                      </FormItem>
-                                  )}
-                              />
-                              <FormField
-                                  control={form.control}
-                                  name="text"
-                                  render={({ field }) => (
-                                      <FormItem>
-                                      <FormLabel>Editor de texto</FormLabel>
-                                      <FormControl>
-                                          <Tiptap description={field.name} onChange={field.onChange}/>
-                                          {/* <Textarea placeholder="Escreva sua mensagem aqui." /> */}
-                                      </FormControl>
-                                      <FormDescription>
-                                          Vai, pode editar.
-                                      </FormDescription>
-                                      <FormMessage />
-                                      </FormItem>
-                                  )}
-                              />
-                              <Button type="submit">Enviar</Button>
-                          </form>
-                      </Form>
-                    </div>
-                    <div>
-                      <Image src="/contact-us-img.svg" width={383} height={265} alt="Contact us Image" />
-                      <ul className="flex flex-col gap-10 pt-10">
-                        <li className="flex gap-2"> <MapPin /> R. da Consolação, 930 - Consolação, São Paulo - SP</li>
-                        <li className="flex gap-2"> <Mail /> email@email.com</li>
-                        <li className="flex gap-2"> <Phone /> (11) 2114-8000</li>
-                      </ul>
+    return <div className="bg-background">
+        <Hero />
+        <main className="pl-[11.75em] pr-[11.75em] pb-[3.125em] rounded-tl-[3.125em] rounded-br-[0em] rounded-tr-[3.125em] rounded-bl-[0em] bg-background relative h-auto p-[3.125em]">
+            <div className="flex gap-20 justify-between items-center">
+                <div>
+                    <h2 className="uppercase text-foreground text-5xl font-extrabold w-80">saiba mais sobre o nosso laboratório</h2>
+                    <Button className="w-44 mt-10">Confira</Button>
+                </div>
+                <div className="flex gap-3">
+                    {postArray}
+                </div>
+            </div>
+            <div className="mt-10">
+                <h2 className="uppercase text-foreground text-5xl font-extrabold w-80">projetos</h2>
+                <p className="text-foreground">Conheça os projetos realizados no laboratório</p>
+                <Button className="w-44 mt-10">Confira</Button>
+                <div className="mt-10">
+                    <div className="flex gap-6">
+                        <div className="w-[251px] h-[186px] rounded-md box-border">
+                            <img src="/project-image1.svg" alt="Project Image" className="w-[100%] h-auto object-cover"/>
+                        </div>
+                        <div>
+                            <p className="text-sm text-primary text-semibold">Em andamento</p>
+                            <h3 className="text-foreground text-bold text-lg">Estação meteorológica</h3>
+                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste, modi corporis sapiente commodi consequatur praesentium aperiam quisquam sunt minus deserunt facere est earum laborum, aliquid velit rem voluptatum. Minus, sunt?</p>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </main>
     </div>
-  )
 }
